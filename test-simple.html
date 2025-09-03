@@ -1,0 +1,32 @@
+<!DOCTYPE html>
+<html>
+<head>
+    <title>Game Test</title>
+    <style>
+        body { margin: 0; background: #000; }
+        #game-container { width: 100vw; height: 100vh; }
+    </style>
+</head>
+<body>
+    <div id="game-container"></div>
+    <script type="module">
+        import Phaser from 'phaser';
+        
+        const config = {
+            type: Phaser.AUTO,
+            width: 800,
+            height: 600,
+            parent: 'game-container',
+            backgroundColor: '#1a1a1a',
+            scene: {
+                create() {
+                    this.add.rectangle(400, 300, 100, 100, 0xff0000);
+                    console.log('Test scene created');
+                }
+            }
+        };
+        
+        const game = new Phaser.Game(config);
+    </script>
+</body>
+</html>

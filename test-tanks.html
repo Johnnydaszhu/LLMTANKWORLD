@@ -1,0 +1,27 @@
+<!DOCTYPE html>
+<html>
+<head>
+    <title>Tank Test</title>
+    <style>
+        body { margin: 0; background: #000; }
+    </style>
+</head>
+<body>
+    <div id="game-container"></div>
+    <script type="module">
+        import Phaser from 'phaser';
+        import { TestScene } from '/src/components/TestScene.js';
+        
+        const config = {
+            type: Phaser.AUTO,
+            width: 800,
+            height: 600,
+            parent: 'game-container',
+            backgroundColor: '#2a2a2a',
+            scene: [TestScene]
+        };
+        
+        const game = new Phaser.Game(config);
+    </script>
+</body>
+</html>

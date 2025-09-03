@@ -1,0 +1,113 @@
+<!DOCTYPE html>
+<html>
+<head>
+    <title>StepFun Realtime API Test</title>
+    <style>
+        body { font-family: Arial, sans-serif; padding: 20px; background: #1a1a1a; color: white; }
+        .container { max-width: 600px; margin: 0 auto; }
+        .input-group { margin: 15px 0; }
+        input, textarea, select, button { 
+            width: 100%; 
+            padding: 10px; 
+            margin: 5px 0; 
+            background: #333; 
+            border: 1px solid #555; 
+            color: white; 
+            border-radius: 5px;
+        }
+        button { background: #4CAF50; cursor: pointer; }
+        button:disabled { background: #666; cursor: not-allowed; }
+        .status { padding: 10px; margin: 10px 0; border-radius: 5px; }
+        .success { background: #4CAF50; }
+        .error { background: #f44336; }
+        .info { background: #2196F3; }
+    </style>
+</head>
+<body>
+    <div class="container">
+        <h1>StepFun Realtime API 测试</h1>
+        
+        <div class="input-group">
+            <label>API Key:</label>
+            <input type="password" id="api-key" placeholder="输入 StepFun API Key">
+        </div>
+        
+        <div class="input-group">
+            <label>选择声音:</label>
+            <select id="voice-select">
+                <option value="linjiajiejie">林姐姐 - 温柔女声</option>
+                <option value="zhongqiu">中秋 - 温暖女声</option>
+                <option value="xiaoqi">小七 - 活泼女声</option>
+                <option value="yunhao">云浩 - 沉稳男声</option>
+                <option value="zhiqiang">志强 - 有力男声</option>
+            </select>
+        </div>
+        
+        <div class="input-group">
+            <label>测试文本:</label>
+            <textarea id="test-text" rows="3">欢迎来到 LLMTANKWORLD！这是一场精彩的坦克对战！</textarea>
+        </div>
+        
+        <button id="connect-btn" onclick="testConnection()">测试连接</button>
+        <button id="tts-btn" onclick="testTTS()" disabled>语音合成</button>
+        
+        <div id="status"></div>
+        
+        <div class="input-group">
+            <h3>连接说明:</h3>
+            <p>1. 确保代理服务正在运行: <code>./start-proxy.sh</code></p>
+            <p>2. 输入有效的 StepFun API Key</p>
+            <p>3. 点击"测试连接"验证连接</p>
+            <p>4. 点击"语音合成"测试 TTS 功能</p>
+        </div>
+    </div>
+
+    <script type="module">
+        import { StepFunRealtimeTTS } from './src/components/StepFunRealtimeTTS.js';
+        
+        window.tts = new StepFunRealtimeTTS();
+        
+        function showStatus(message, type = 'info') {
+            const statusDiv = document.getElementById('status');
+            statusDiv.innerHTML = `<div class="status ${type}">${message}</div>`;
+        }
+        
+        window.testConnection = async function() {
+            const apiKey = document.getElementById('api-key').value.trim();
+            if (!apiKey) {
+                showStatus('请输入 API Key', 'error');
+                return;
+            }
+            
+            try {
+                showStatus('正在连接...', 'info');
+                window.tts.apiKey = apiKey;
+                await window.tts.connect();
+                showStatus('连接成功！', 'success');
+                document.getElementById('tts-btn').disabled = false;
+            } catch (error) {
+                showStatus(`连接失败: ${error.message}`, 'error');
+            }
+        };
+        
+        window.testTTS = async function() {
+            const text = document.getElementById('test-text').value.trim();
+            const voice = document.getElementById('voice-select').value;
+            
+            if (!text) {
+                showStatus('请输入测试文本', 'error');
+                return;
+            }
+            
+            try {
+                showStatus('正在合成语音...', 'info');
+                window.tts.setVoice(voice);
+                await window.tts.synthesize(text);
+                showStatus('语音合成完成！', 'success');
+            } catch (error) {
+                showStatus(`合成失败: ${error.message}`, 'error');
+            }
+        };
+    </script>
+</body>
+</html>

@@ -1,0 +1,52 @@
+<!DOCTYPE html>
+<html>
+<head>
+    <title>TTS Test</title>
+</head>
+<body>
+    <label>
+        <input type="checkbox" id="use-step-tts">
+        <span>🤖 使用 Step-Audio2</span>
+    </label>
+    
+    <div id="step-tts-options" style="display: none; margin-top: 10px; padding: 10px; background: rgba(255,255,255,0.1); border-radius: 5px;">
+        <h3>TTS Options</h3>
+        <p>These options should appear when checkbox is checked!</p>
+        
+        <div style="margin-bottom: 10px;">
+            <label style="display: flex; align-items: center; gap: 5px; cursor: pointer; margin-bottom: 5px;">
+                <input type="radio" name="tts-source" value="local" checked>
+                <span>本地模型</span>
+            </label>
+            <label style="display: flex; align-items: center; gap: 5px; cursor: pointer;">
+                <input type="radio" name="tts-source" value="cloud">
+                <span>云端 API</span>
+            </label>
+        </div>
+        
+        <div>
+            <label>API 端点:</label>
+            <input type="text" id="tts-endpoint" placeholder="http://localhost:8000/tts" style="width: 100%; margin-top: 5px;">
+        </div>
+    </div>
+
+    <script>
+        const checkbox = document.getElementById('use-step-tts');
+        const options = document.getElementById('step-tts-options');
+        
+        checkbox.addEventListener('change', (e) => {
+            if (e.target.checked) {
+                options.style.display = 'block';
+                console.log('Options shown');
+            } else {
+                options.style.display = 'none';
+                console.log('Options hidden');
+            }
+        });
+        
+        console.log('Test page loaded');
+        console.log('Checkbox:', checkbox);
+        console.log('Options:', options);
+    </script>
+</body>
+</html>
